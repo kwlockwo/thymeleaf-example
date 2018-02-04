@@ -18,11 +18,9 @@ public class MongoDBConfiguration extends AbstractMongoConfiguration {
 	public Mongo mongo() throws Exception {
 		
 		MongoClientURI mongoUri = new MongoClientURI(System.getenv("MONGODB_URI"));
-		MongoClient mongoClient = new MongoClient(mongoUri);
+		database = mongoUri.getDatabase();
 		
-		database = mongoClient.getDatabaseNames().get(0);
-		
-		return mongoClient;
+		return new MongoClient(mongoUri);
 	}
 
 	@Override
