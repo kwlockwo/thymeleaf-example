@@ -5,20 +5,28 @@ import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 
 @Configuration
 @EnableMongoRepositories("xpadro.thymeleaf.repository")
 public class MongoDBConfiguration extends AbstractMongoConfiguration {
 
-	@Override
-	protected String getDatabaseName() {
-		return "hotel-db";
-	}
+	private String database;
 
 	@Override
 	public Mongo mongo() throws Exception {
-		String mongoUri = System.getenv("MONGODB_URI");
 		
-		return new Mongo(mongoUri);
+		MongoClientURI mongoUri = new MongoClientURI(System.getenv("MONGODB_URI"));
+		MongoClient mongoClient = new MongoClient(mongoUri);
+		
+		database = mongoClient.getDatabaseNames().get(0);
+		
+		return mongoClient;
+	}
+
+	@Override
+	protected String getDatabaseName() {
+		return database;
 	}
 }
