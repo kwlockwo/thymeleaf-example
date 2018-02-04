@@ -17,8 +17,8 @@ public class MongoDBConfiguration extends AbstractMongoConfiguration {
 
 	@Override
 	public Mongo mongo() throws Exception {
-		String mongoUrl = System.getenv("DATABASE_URL");
+		String mongoUri = System.getenv("MONGODB_URI");
 		
-		return new Mongo(mongoUrl);
+		return new Mongo(mongoUri);
 	}
 }
